@@ -59,11 +59,12 @@ module alu_tb;
 			clk = 0; #5; // 10ns period
 		end
 initial begin
-for(i = 0; i < 8; i = i + 1) begin
+#1000;
+for(i = 0; i < 1; i = i + 1) begin
 		opcode = i;
-for(j = 0; j < 255; j = j + 16) begin
+for(j = 0; j < 655536; j = j + 16) begin
 	A = j;
-for(k = 0; k < 255; k = k + 16) begin
+for(k = 0; k < 65536; k = k + 16) begin
 	B = k;
 
 			case(opcode)

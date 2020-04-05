@@ -43,37 +43,66 @@ module myalu#( parameter NUMBITS = 16 ) (
 //		.overflow(overflow)
 //		
 //    );
+		reg [NUMBITS:0] t;
+		reg [NUMBITS - 1: 0] inter;
 	 always @ (posedge clk)begin 
 			case(opcode)
-				3'b000:
-//				unsigned add
+				3'b000: // unsigned add
+
 				begin
-	 end
-				3'b001: begin 
+					assign t = A + B;
+					assign result = t[NUMBITS - 1: 0];
+					assign carryout = 1;
+					assign overflow = t[NUMBITS];
+					assign zero = (result == 0) ? 1: 0;
+				
 				end
-//				signed add
-				3'b010: begin
+				3'b001: // signed add
+				begin
+					assign t = A + B;
+					assign result = t[NUMBITS - 1: 0];
+					assign carryout = 1;
+					assign overflow = t[NUMBITS];
+					assign zero = (result == 0) ? 1: 0;
 				end
-//				unsigned sub
-				3'b011: begin
+
+				3'b010: // unsigned sub 
+				begin
+					assign t = A - B;
+					assign result = t[NUMBITS - 1: 0];
+					assign carryout = 0;
+					assign overflow = t[NUMBITS];
+				
+				end
+
+				3'b011: // signed sub
+				begin
+					assign result = A - B;
+					
 				end
 				
-//				signed sub
-				3'b100: begin
+				3'b100: // AND
+				begin
+				assign result = A & B;
 				end
-//				bit and
-				3'b101: begin
+
+				3'b101:  // OR
+				begin
+					assign result = A | B;
 				end
-//				bit or
-				3'b110: begin
+
+				3'b110: // XOR
+				begin
+					assign result = A ^ B;
 				end
 				
 //				bit xor
 				3'b111: begin
+					assign result = A >> 2;
 				end
 //				a by 2
-				default: begin
-				end
+				
+			
 			endcase
 			end // alwasy
 
