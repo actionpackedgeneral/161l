@@ -44,7 +44,7 @@ module myalu#( parameter NUMBITS = 16 ) (
 //		
 //    );
 		reg [NUMBITS:0] t;
-		reg [NUMBITS - 1: 0] inter;
+
 	 always @ (posedge clk)begin 
 			case(opcode)
 				3'b000: // unsigned add
@@ -52,8 +52,8 @@ module myalu#( parameter NUMBITS = 16 ) (
 				begin
 					assign t = A + B;
 					assign result = t[NUMBITS - 1: 0];
-					assign carryout = 1;
-					assign overflow = t[NUMBITS];
+					assign carryout = t[NUMBITS];
+					assign overflow = 0;
 					assign zero = (result == 0) ? 1: 0;
 				
 				end
@@ -61,8 +61,9 @@ module myalu#( parameter NUMBITS = 16 ) (
 				begin
 					assign t = A + B;
 					assign result = t[NUMBITS - 1: 0];
-					assign carryout = 1;
-					assign overflow = t[NUMBITS];
+					assign carryout = 0;
+//					assign a1 = !(A ^ B);
+					assign overflow = !(A^B) & t[NUMBITS];
 					assign zero = (result == 0) ? 1: 0;
 				end
 
@@ -77,28 +78,45 @@ module myalu#( parameter NUMBITS = 16 ) (
 
 				3'b011: // signed sub
 				begin
-					assign result = A - B;
+					assign t = A - B;
+					assign result = t[NUMBITS -1 : 0];
+					assign overflow = (!A & B & T[NUMBITS]) | ( A & !B & !T[NUMBITS]);
+					assign carryout = 0;
+					assign zero = (result == 0) ? 1: 0;
+			
 					
 				end
 				
 				3'b100: // AND
 				begin
 				assign result = A & B;
+				assign zero = (result == 0) ? 1: 0;
+				assign overflow = 0;
+				assign carryout = 0;
 				end
 
 				3'b101:  // OR
 				begin
 					assign result = A | B;
+					assign zero = (result == 0) ? 1: 0;
+					assign overflow = 0;
+					assign carryout = 0;
 				end
 
 				3'b110: // XOR
 				begin
 					assign result = A ^ B;
+					assign zero = (result == 0) ? 1: 0;
+					assign overflow = 0;
+					assign carryout = 0;
 				end
 				
 //				bit xor
 				3'b111: begin
 					assign result = A >> 2;
+					assign zero = (result == 0) ? 1: 0;
+					assign overflow = 0;
+					assign carryout = 0;
 				end
 //				a by 2
 				
