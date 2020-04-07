@@ -80,7 +80,7 @@ module myalu#( parameter NUMBITS = 16 ) (
 				begin
 					assign t = A - B;
 					assign result = t[NUMBITS -1 : 0];
-					assign overflow = (!A & B & t[NUMBITS]) | ( A & !B & !T[NUMBITS]);
+					assign overflow = (!A & B & t[NUMBITS]) | ( A & !B & !t[NUMBITS]);
 					assign carryout = 0;
 					assign zero = (result == 0) ? 1: 0;
 			
