@@ -63,8 +63,7 @@ module myalu#( parameter NUMBITS = 16 ) (
 					assign result = t[NUMBITS - 1: 0];
 					assign carryout = 0;
 //					assign a1 = !(A ^ B);
-					assign overflow = !(A^B) & t[NUMBITS];
-					assign zero = (result == 0) ? 1: 0;
+					assign overflow = (A & B & !t[NUMBITS]) | (!A & !B & t[NUMBITS]);					assign zero = (result == 0) ? 1: 0;
 				end
 
 				3'b010: // unsigned sub 
@@ -113,7 +112,7 @@ module myalu#( parameter NUMBITS = 16 ) (
 				
 //				bit xor
 				3'b111: begin
-					assign result = A >> 2;
+					assign result = A >> 1;
 					assign zero = (result == 0) ? 1: 0;
 					assign overflow = 0;
 					assign carryout = 0;
