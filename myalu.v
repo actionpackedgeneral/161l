@@ -59,11 +59,14 @@ module myalu#( parameter NUMBITS = 16 ) (
 				end
 				3'b001: // signed add
 				begin
-					assign t = A + B;
-					assign result = t[NUMBITS - 1: 0];
+//					assign t = A + B;
+//					assign result = t[NUMBITS - 1: 0];
+					assign result = A + B;
+					
 					assign carryout = 0;
 //					assign a1 = !(A ^ B);
-					assign overflow = (A[NUMBITS-1] & B[NUMBITS -1] & !t[NUMBITS]) | (!A[NUMBITS -1] & !B[NUMBITS -1] & t[NUMBITS - 1]);
+					assign overflow = (A[NUMBITS-1] & B[NUMBITS -1] & !result[NUMBITS -1]) | 
+					(!A[NUMBITS -1] & !B[NUMBITS -1] & result[NUMBITS - 1]);
 					assign zero = (result == 0) ? 1: 0;
 				end
 
