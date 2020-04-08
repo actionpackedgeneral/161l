@@ -79,7 +79,7 @@ module myalu#( parameter NUMBITS = 16 ) (
 				
 				end
 
-				3'b011: // signed sub
+				3'b011: //// signed sub
 				begin
 					assign t = A - B;
 					assign result = t[NUMBITS -1 : 0];
