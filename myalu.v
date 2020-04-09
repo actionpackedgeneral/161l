@@ -50,74 +50,93 @@ module myalu#( parameter NUMBITS = 16 ) (
 				3'b000: // unsigned add
 
 				begin
-					assign t = A + B;
-					assign result = t[NUMBITS - 1: 0];
-					assign carryout = t[NUMBITS];
-					assign overflow = 0;
-					assign zero = (result == 0) ? 1: 0;
+//					assign t = A + B;
+//					assign result = t[NUMBITS - 1: 0];
+//					assign carryout = t[NUMBITS];
+//					assign overflow = 0;
+//					assign zero = (result == 0) ? 1: 0;
+					t = A + B;
+					result <= t[NUMBITS - 1: 0];
+					carryout <= t[NUMBITS];
+					overflow <= 0;
+					zero <= (!t[NUMBITS -1:0])? 1 : 0;
 				
 				end
 				3'b001: // signed add
 				begin
 					t = A + B;
 					result <= t[NUMBITS - 1: 0];
-					zero<=(t[NUMBITS-1:0] == 0) ? 1: 0;
-					carryout <= 0;
-					overflow <= (A[NUMBITS-1] & B[NUMBITS -1] & !result[NUMBITS -1]) | 
-					(!A[NUMBITS -1] & !B[NUMBITS -1] & result[NUMBITS - 1]);
+					carryout <= t[NUMBITS];
+					overflow <= 0;
+					zero <= (!t[NUMBITS -1: 0])? 1 : 0;
+					if ((A[NUMBITS-1] & B[NUMBITS -1] & !t[NUMBITS -1]) | 
+					(!A[NUMBITS -1] & !B[NUMBITS -1] & t[NUMBITS - 1])) begin
+					overflow <= 1;
+					end else begin
+					overflow <= 0;
+					end
 
 				end
 
 				3'b010: // unsigned sub 
 				begin
-					assign t = A - B;
-					assign result = t[NUMBITS - 1: 0];
-					assign carryout = 0;
-					assign overflow = t[NUMBITS];
-				
+					t = A - B;
+					result <= t[NUMBITS - 1: 0];
+					carryout <= t[NUMBITS];
+					overflow <= 0;
+					zero <= (!t[NUMBITS -1:0])? 1 : 0;
 				end
 
 				3'b011: //// signed sub
 				begin
-					assign t = A - B;
-					assign result = t[NUMBITS -1 : 0];
-					assign overflow = (!A & B & t[NUMBITS]) | ( A & !B & !t[NUMBITS]);
-					assign carryout = 0;
-					assign zero = (result == 0) ? 1: 0;
+					t = A - B;
+					result <= t[NUMBITS - 1: 0];
+					carryout <= t[NUMBITS];
+					if ((A[NUMBITS-1] & !B[NUMBITS -1] & !t[NUMBITS -1]) | 
+					(!A[NUMBITS -1] & B[NUMBITS -1] & t[NUMBITS - 1])) begin
+					overflow <= 1;
+					end else begin
+					overflow <= 0;
+					end
+					zero <= (!t[NUMBITS -1:0])? 1 : 0;
 			
 					
 				end
 				
 				3'b100: // AND
 				begin
-					assign result = A & B;
-					assign zero = (result == 0) ? 1: 0;
-					assign overflow = 0;
-					assign carryout = 0;
+					t = A & B;
+					result <= t[NUMBITS - 1: 0];
+					carryout <= 0;
+					overflow <= 0;
+					zero <= (!t[NUMBITS -1:0])? 1 : 0;
 				end
 
 				3'b101:  // OR
 				begin
-					assign result = A | B;
-					assign zero = (result == 0) ? 1: 0;
-					assign overflow = 0;
-					assign carryout = 0;
+					t = A | B;
+					result <= t[NUMBITS - 1: 0];
+					carryout <= 0;
+					overflow <= 0;
+					zero <= (!t[NUMBITS -1:0])? 1 : 0;
 				end
 
 				3'b110: // XOR
 				begin
-					assign result = A ^ B;
-					assign zero = (result == 0) ? 1: 0;
-					assign overflow = 0;
-					assign carryout = 0;
+					t = A ^ B;
+					result <= t[NUMBITS - 1: 0];
+					carryout <= 0;
+					overflow <= 0;
+					zero <= (!t[NUMBITS -1:0])? 1 : 0;
 				end
 				
 //				bit xor
 				3'b111: begin
-					assign result = A >> 1;
-					assign zero = (result == 0) ? 1: 0;
-					assign overflow = 0;
-					assign carryout = 0;
+					t = A >> 1;
+					result <= t[NUMBITS - 1: 0];
+					carryout <= 0;
+					overflow <= 0;
+					zero <= (!t[NUMBITS -1:0])? 1 : 0;
 				end
 //				a by 2
 				
